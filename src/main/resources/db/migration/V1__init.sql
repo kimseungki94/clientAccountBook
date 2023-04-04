@@ -14,3 +14,8 @@ CREATE TABLE IF NOT EXISTS accountbook (
    `payment_type` VARCHAR(80),
    PRIMARY KEY (`accountbook_id`))
     ENGINE = InnoDB DEFAULT CHARSET=utf8;
+
+ALTER TABLE accountbook
+    ADD COLUMN user_id BIGINT NOT NULL,
+    ADD CONSTRAINT fk_accountbook_user
+        FOREIGN KEY (user_id) REFERENCES user(user_id) ON DELETE CASCADE;
