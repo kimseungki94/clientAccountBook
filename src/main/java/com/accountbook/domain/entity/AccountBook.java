@@ -1,4 +1,4 @@
-package com.accountbook.domain;
+package com.accountbook.domain.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
