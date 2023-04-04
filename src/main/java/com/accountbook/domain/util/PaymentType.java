@@ -4,8 +4,9 @@ import lombok.Getter;
 
 @Getter
 public enum PaymentType {
-    CASH("현금"),
-    CARD("카드");
+    CASH("CASH"),
+    CARD("CARD"),
+    ETC("ETC");
 
     private String name;
 

@@ -1,4 +1,4 @@
-package com.accountbook.presentation.dto.request;
+package com.accountbook.presentation.dto.request.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,7 +11,7 @@ import javax.validation.constraints.Pattern;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserJoinRequestDto {
+public class JoinUserRequestDto {
     @NonNull
     @Email(message = "이메일 형식이 올바르지 않습니다")
     private String email;

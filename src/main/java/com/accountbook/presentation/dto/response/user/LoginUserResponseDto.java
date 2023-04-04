@@ -1,4 +1,4 @@
-package com.accountbook.presentation.dto.response;
+package com.accountbook.presentation.dto.response.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserLoginResponseDto {
+public class LoginUserResponseDto {
     private String message;
     private String accessToken;
     private String refreshToken;

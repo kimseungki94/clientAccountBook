@@ -1,9 +1,6 @@
 package com.accountbook;
 
-import com.accountbook.presentation.exception.CommonExceptionResponse;
-import com.accountbook.presentation.exception.ExpireTokenException;
-import com.accountbook.presentation.exception.SameEmailException;
-import com.accountbook.presentation.exception.WrongEmailOrPasswordException;
+import com.accountbook.presentation.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -38,6 +35,26 @@ public class GlobalExceptionHandler {
                         .builder()
                         .exceptionMessage("user exception")
                         .exceptionDetail("토큰이 만료되었습니다.")
+                        .build(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(NoAccountBookDataException.class)
+    public ResponseEntity<CommonExceptionResponse> noDataException() {
+        return new ResponseEntity<CommonExceptionResponse>(
+                CommonExceptionResponse
+                        .builder()
+                        .exceptionMessage("accountBook exception")
+                        .exceptionDetail("가계부가 존재하지 않습니다")
+                        .build(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(NoAuthentication.class)
+    public ResponseEntity<CommonExceptionResponse> noAuthentication() {
+        return new ResponseEntity<CommonExceptionResponse>(
+                CommonExceptionResponse
+                        .builder()
+                        .exceptionMessage("accountBook exception")
+                        .exceptionDetail("실행할 권한이 없습니다.")
                         .build(), HttpStatus.BAD_REQUEST);
     }
 }

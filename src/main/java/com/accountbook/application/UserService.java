@@ -2,11 +2,11 @@ package com.accountbook.application;
 
 import com.accountbook.domain.entity.User;
 import com.accountbook.infrastrcture.UserRepository;
-import com.accountbook.presentation.dto.request.UserJoinRequestDto;
-import com.accountbook.presentation.dto.request.UserLoginRequestDto;
+import com.accountbook.presentation.dto.request.user.JoinUserRequestDto;
+import com.accountbook.presentation.dto.request.user.LoginUserRequestDto;
 import com.accountbook.presentation.dto.response.CommonResponseDto;
-import com.accountbook.presentation.dto.response.UserLoginResponseDto;
-import com.accountbook.presentation.dto.response.UserRefreshTokenResponseDto;
+import com.accountbook.presentation.dto.response.user.LoginUserResponseDto;
+import com.accountbook.presentation.dto.response.user.RefreshTokenResponseDto;
 import com.accountbook.presentation.exception.ExpireTokenException;
 import com.accountbook.presentation.exception.SameEmailException;
 import com.accountbook.presentation.exception.WrongEmailOrPasswordException;
@@ -31,13 +31,13 @@ public class UserService {
     private final RedisTemplate<String, String> redisTemplate;
 
     @Transactional
-    public CommonResponseDto joinUser(final UserJoinRequestDto userJoinRequestDto) {
-        String email = userJoinRequestDto.getEmail();
-        String password = encoder.encode(userJoinRequestDto.getPassword());
-        userJoinRequestDto.encodingPassword(password);
+    public CommonResponseDto joinUser(final JoinUserRequestDto joinUserRequestDto) {
+        String email = joinUserRequestDto.getEmail();
+        String password = encoder.encode(joinUserRequestDto.getPassword());
+        joinUserRequestDto.encodingPassword(password);
 
         if (existsByEmail(email)) throw new SameEmailException();
-        User user = User.convertUserJoinToUserEntity(userJoinRequestDto);
+        User user = User.convertUserJoinToUserEntity(joinUserRequestDto);
         userRepository.save(user);
 
         return CommonResponseDto.builder()
@@ -47,21 +47,25 @@ public class UserService {
     }
 
     @Transactional
-    public UserLoginResponseDto loginUser(final UserLoginRequestDto userLoginRequestDto) {
-        String email = userLoginRequestDto.getEmail();
-        String password = userLoginRequestDto.getPassword();
+    public LoginUserResponseDto loginUser(final LoginUserRequestDto loginUserRequestDto) {
+        String email = loginUserRequestDto.getEmail();
+        String password = loginUserRequestDto.getPassword();
 
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new WrongEmailOrPasswordException());
+        User user = findUserByEmail(email);
         if (!encoder.matches(password, user.getPassword())) throw new WrongEmailOrPasswordException();
 
         String refreshToken = jwtUtil.createRefreshToken(email);
         setRedisRefreshToken(email, refreshToken);
 
-        return UserLoginResponseDto.builder()
+        return LoginUserResponseDto.builder()
                 .message("success")
                 .accessToken(jwtUtil.createAccessToken(email))
                 .refreshToken(refreshToken)
                 .build();
+    }
+
+    private User findUserByEmail(String email) {
+        return userRepository.findByEmail(email).orElseThrow(() -> new WrongEmailOrPasswordException());
     }
 
     private boolean existsByEmail(final String email) {
@@ -69,7 +73,7 @@ public class UserService {
     }
 
     @Transactional
-    public UserRefreshTokenResponseDto checkRefreshToken(String refreshToken) {
+    public RefreshTokenResponseDto checkRefreshToken(String refreshToken) {
         String token = refreshToken.split(" ")[1];
         boolean validateToken = jwtUtil.validateToken(token, secretKey);
         if (!validateToken) {
@@ -77,11 +81,11 @@ public class UserService {
         }
         String loginId = JwtUtil.getEmail(token, secretKey);
         String redisRefreshToken = getRedisRefreshToken(loginId);
-        /** 레디스 캐쉬 존재 유무 확인 */
+
         if (!token.equals(redisRefreshToken)) throw new ExpireTokenException();
 
         String accessToken = jwtUtil.createAccessToken(loginId);
-        return UserRefreshTokenResponseDto
+        return RefreshTokenResponseDto
                 .builder()
                 .accessToken(accessToken)
                 .message("success")

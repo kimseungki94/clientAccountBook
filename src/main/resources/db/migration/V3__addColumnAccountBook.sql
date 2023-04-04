@@ -1,0 +1,1 @@
+ALTER TABLE accountbook ADD COLUMN is_delete boolean not null default 0

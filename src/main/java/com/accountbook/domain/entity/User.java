@@ -1,13 +1,10 @@
 package com.accountbook.domain.entity;
 
-import com.accountbook.presentation.dto.request.UserJoinRequestDto;
-import com.accountbook.presentation.dto.request.UserLoginRequestDto;
+import com.accountbook.presentation.dto.request.user.JoinUserRequestDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.*;
 
@@ -32,15 +29,11 @@ public class User {
     @Column(nullable = false)
     private String name;
 
-    public static User convertUserJoinToUserEntity(UserJoinRequestDto userJoinRequestDto) {
+    public static User convertUserJoinToUserEntity(JoinUserRequestDto joinUserRequestDto) {
         return User.builder()
-                .email(userJoinRequestDto.getEmail())
-                .name(userJoinRequestDto.getName())
-                .password(userJoinRequestDto.getPassword())
+                .email(joinUserRequestDto.getEmail())
+                .name(joinUserRequestDto.getName())
+                .password(joinUserRequestDto.getPassword())
                 .build();
-    }
-
-    public static User convertUserLoginToUserEntity(UserLoginRequestDto userLoginRequestDto) {
-        return null;
     }
 }

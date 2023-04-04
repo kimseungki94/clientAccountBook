@@ -1,4 +1,4 @@
-package com.accountbook.presentation.dto.request;
+package com.accountbook.presentation.dto.request.accountbook;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,9 +8,8 @@ import lombok.NonNull;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserLoginRequestDto {
+public class DeleteAccountBookRequestDto {
+
     @NonNull
-    private String email;
-    @NonNull
-    private String password;
+    Long accountBookId;
 }

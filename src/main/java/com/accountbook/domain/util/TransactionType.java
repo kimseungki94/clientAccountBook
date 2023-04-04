@@ -4,8 +4,9 @@ import lombok.Getter;
 
 @Getter
 public enum TransactionType {
-    INCOME("수입"),
-    EXPANSE("지출");
+    INCOME("INCOME"),
+    EXPANSE("EXPANSE"),
+    ETC("ETC");
 
     private String name;
 
