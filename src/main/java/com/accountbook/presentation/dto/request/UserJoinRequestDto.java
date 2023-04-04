@@ -13,4 +13,8 @@ public class UserJoinRequestDto {
     private String email;
     @NonNull
     private String password;
+
+    public void encodingPassword(final String password) {
+        this.password = password;
+    }
 }
