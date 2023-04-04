@@ -23,15 +23,19 @@ public class User {
     @Column(name = "user_id")
     private Long id;
 
-    @Column(name = "email", nullable = false)
+    @Column(nullable = false)
     private String email;
 
-    @Column(name = "password", nullable = false)
+    @Column(nullable = false)
     private String password;
+
+    @Column(nullable = false)
+    private String name;
 
     public static User convertUserJoinToUserEntity(UserJoinRequestDto userJoinRequestDto) {
         return User.builder()
                 .email(userJoinRequestDto.getEmail())
+                .name(userJoinRequestDto.getName())
                 .password(userJoinRequestDto.getPassword())
                 .build();
     }

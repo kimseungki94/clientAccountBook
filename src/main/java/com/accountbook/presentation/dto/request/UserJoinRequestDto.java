@@ -21,6 +21,9 @@ public class UserJoinRequestDto {
     @NonNull
     private String password;
 
+    @NonNull
+    private String name;
+
     public void encodingPassword(final String password) {
         this.password = password;
     }
