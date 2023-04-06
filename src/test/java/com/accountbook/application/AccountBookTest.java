@@ -7,7 +7,6 @@ import com.accountbook.domain.util.TransactionType;
 import com.accountbook.infrastrcture.AccountBookRepository;
 import com.accountbook.infrastrcture.UserRepository;
 import com.accountbook.presentation.dto.request.accountbook.InsertAccountBookRequestDto;
-import com.accountbook.presentation.dto.request.user.JoinUserRequestDto;
 import com.accountbook.presentation.dto.response.CommonResponseDto;
 import com.accountbook.presentation.dto.response.accountbook.SelectAccountBookResponseDto;
 import org.junit.jupiter.api.BeforeEach;

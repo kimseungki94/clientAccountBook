@@ -36,23 +36,21 @@ public class UserServiceTest {
         CommonResponseDto commonResponseDto = new CommonResponseDto("success","회원가입 성공");
 
         when(userRepository.existsByEmail(any())).thenReturn(false);
+
         CommonResponseDto responseDto = userService.joinUser(joinUserRequestDto);
         assertEquals(commonResponseDto.getResponseMessage(), responseDto.getResponseMessage());
         assertEquals(commonResponseDto.getResponseDescription(), responseDto.getResponseDescription());
     }
 
     @Test
-    @DisplayName("유저 테이블에 존재하지 않은 아이디 패스워드를 입력하는 경우 WrongIdOrPasswordException 던지며 로그인 실패")
+    @DisplayName("유저 테이블에 존재하지 않은 아이디 패스워드를 입력하는 경우 WrongEmailOrPasswordException 던지며 로그인 실패")
     void 로그인_회원정보불일치() {
-        //Given
         String email = "test@test.com";
         String password = "test1234!";
         LoginUserRequestDto loginUserRequestDto = new LoginUserRequestDto(email, password);
 
-        //When
         when(userRepository.findByEmail(any())).thenThrow(new WrongEmailOrPasswordException());
 
-        //Then
         assertThrows(WrongEmailOrPasswordException.class, () -> userService.loginUser(loginUserRequestDto));
     }
 }
